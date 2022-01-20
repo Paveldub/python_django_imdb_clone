@@ -5,11 +5,15 @@ class WatchListSerializer(serializers.ModelSerializer):
    
     class Meta:
         model = WatchList
-        fields = ['id', 'title', 'storyline', 'active', 'created']
-        # '__all__'
+        fields = ('id', 'title', 'storyline', 'active', 'created')
+        # better to use tupple ()
+
         
 class StreamPlatformSerializer(serializers.ModelSerializer):
-
+    watchlist = WatchListSerializer(many=True, read_only=True)
+    
     class Meta:
         model = StreamPlatform
-        fields = ['id', 'name',  'about', 'website']
+        fields = '__all__'
+        # better to use tupple ()
+     

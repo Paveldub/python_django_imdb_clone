@@ -1,5 +1,6 @@
 from django.urls import path
 from watchlist_app.api.views import WatchListAV, WatchDetailAV, StreamPlatformAV, StreamPlatformDetailAV
+from rest_framework import routers
 
 urlpatterns = [
     path('list/', WatchListAV.as_view(), name='watch_list'),
