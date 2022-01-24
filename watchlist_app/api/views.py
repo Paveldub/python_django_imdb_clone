@@ -13,15 +13,11 @@ from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
 # lists
-class ReviewList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):    
+
+# Concrete View Classes
+class ReviewList(generics.ListCreateAPIView):    
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
     
 class WatchListAV(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = WatchList.objects.all()
@@ -44,12 +40,10 @@ class StreamPlatformAV(mixins.ListModelMixin, mixins.CreateModelMixin, generics.
         return self.create(request, *args, **kwargs)   
     
 # details (each item)
-class ReviewDetails(mixins.RetrieveModelMixin, generics.GenericAPIView):
+class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+
     
 class StreamPlatformDetailAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):  
     queryset = StreamPlatform.objects.all()
