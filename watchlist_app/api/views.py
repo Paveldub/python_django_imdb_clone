@@ -13,11 +13,22 @@ from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
 # lists
-
 # Concrete View Classes
-class ReviewList(generics.ListCreateAPIView):    
-    queryset = Review.objects.all()
+class ReviewList(generics.ListAPIView):    
     serializer_class = ReviewSerializer
+    
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        watchlist = WatchList.objects.get(pk=pk)
+        
+        serializer.save(watchlist=watchlist)
+    
+class ReviewCreate(generics.CreateAPIView):
+    serializer_class = ReviewSerializer
+    
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Review.objects.filter(watchlist=pk)
     
 class WatchListAV(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = WatchList.objects.all()
