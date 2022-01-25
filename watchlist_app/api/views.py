@@ -7,6 +7,7 @@ from rest_framework import status
 # for mixins and generics
 from rest_framework import generics
 from rest_framework import mixins
+from rest_framework import viewsets
 
 # App imports
 from watchlist_app.models import WatchList, StreamPlatform, Review
@@ -14,73 +15,21 @@ from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSer
 
 # lists
 # Concrete View Classes
-class ReviewList(generics.ListAPIView):    
+class ReviewVeiwSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    queryset = Review.objects.all() 
     serializer_class = ReviewSerializer
     
-    def perform_create(self, serializer):
-        pk = self.kwargs.get('pk')
-        watchlist = WatchList.objects.get(pk=pk)
-        
-        serializer.save(watchlist=watchlist)
-    
-class ReviewCreate(generics.CreateAPIView):
-    serializer_class = ReviewSerializer
-    
-    def get_queryset(self):
-        pk = self.kwargs['pk']
-        return Review.objects.filter(watchlist=pk)
-    
-class WatchListAV(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+class WatchViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-    
-class StreamPlatformAV(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):  
-    queryset = StreamPlatform.objects.all()
-    serializer_class = StreamPlatformSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)   
-    
-# details (each item)
-class ReviewDetails(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-
-    
-class StreamPlatformDetailAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):  
+class StreamPlatformViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,  viewsets.GenericViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
     
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+
     
-    def put(self, request, pk):
-        return self.update(request, *args, **kwargs)
-        
-    def delete(self, request, pk):
-        return self.destroy(request, *args, **kwargs)
-    
-class WatchDetailAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
-    queryset = WatchList.objects.all()
-    serializer_class = WatchListSerializer
-    
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    
-    def put(self, request, pk):
-        return self.update(request, *args, **kwargs)
-        
-    def delete(self, request, pk):
-        return self.destroy(request, *args, **kwargs)
+
     
         
 
