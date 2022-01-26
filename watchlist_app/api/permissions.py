@@ -1,7 +1,21 @@
 from rest_framework import permissions
 
-class AdminOrReadOnly(permissions.IsAdminUser):
+# custom user PERMISSIONS
+class AdminOrReadOnly(permissions.IsAuthenticated):
     
     def has_permission(self, request, view):
-        admin_permission = bool(request.user and request.user.is_staff)
-        return request.method == "GET" or admin_permission
+        # SAFE method only for 'GET' method
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        else:
+            # testing if user ADMIN or not
+            return bool(request.user and request.user.is_staff)
+    
+class ReviewUserOrReadOnly(permissions.BasePermission):
+    
+     def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        else:
+            # review_user - is our variable in models
+            return obj.review_user == request.user

@@ -1,5 +1,5 @@
-# rest framework imports
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+# DEFAULT PERMISSIONS
+from rest_framework.permissions import IsAuthenticated
 
 # for mixins and generics
 from rest_framework import mixins
@@ -9,16 +9,16 @@ from rest_framework import viewsets
 from watchlist_app.models import WatchList, StreamPlatform, Review
 from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 
-# PERMISSIONS 
-from watchlist_app.api.permissions import AdminOrReadOnly
+# CUSTOM PERMISSIONS 
+from watchlist_app.api.permissions import ReviewUserOrReadOnly
 
 # lists
 # Concrete View Classes
-class ReviewVeiwSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+class ReviewViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin,  viewsets.GenericViewSet):
     queryset = Review.objects.all() 
     serializer_class = ReviewSerializer
     # if user auth show this data
-    permission_classes = [AdminOrReadOnly]
+    permission_classes = [ReviewUserOrReadOnly]
         
 class WatchViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = WatchList.objects.all()
