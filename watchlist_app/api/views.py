@@ -1,6 +1,6 @@
 # rest framework imports
 from platform import platform
-from re import T
+from rest_framework.permissions import IsAuthenticated
 
 # for mixins and generics
 from rest_framework import mixins
@@ -15,6 +15,8 @@ from watchlist_app.api.serializers import WatchListSerializer, StreamPlatformSer
 class ReviewVeiwSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = Review.objects.all() 
     serializer_class = ReviewSerializer
+    # if user auth show this data
+    permission_classes = [IsAuthenticated]
         
 class WatchViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = WatchList.objects.all()
