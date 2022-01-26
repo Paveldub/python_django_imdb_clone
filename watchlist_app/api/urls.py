@@ -4,8 +4,8 @@ from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'review', ReviewVeiwSet)
-router.register(r'watchview', WatchViewSet)
-router.register(r'stream-platform', StreamPlatformViewSet)
+router.register(r'watchlist', WatchViewSet)
+router.register(r'stream', StreamPlatformViewSet)
 
 urlpatterns = [
     path('', include(router.urls))
