@@ -15,7 +15,7 @@ class StreamPlatform(models.Model):
 class WatchList(models.Model):
     # django relationships
     platform = models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, related_name="watchlist")
-    
+
     title = models.CharField(max_length=50)
     storyline = models.CharField(max_length=200)
     active = models.BooleanField(default=True)
@@ -26,8 +26,8 @@ class WatchList(models.Model):
     
 class Review(models.Model):
     # django relationships
-    review_user = models.ForeignKey(User, on_delete=models.CASCADE)
-    watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, related_name="reviews")
+    # review_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # watchlist = models.ForeignKey(WatchList, on_delete=models.CASCADE, related_name="reviews")
     
     rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     description = models.CharField(max_length=200, null=True)
